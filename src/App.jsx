@@ -1,6 +1,6 @@
-import {useState, useEffect } from "react";
-export default function TabooGameApp() {
+import { useState, useEffect } from "react";
 
+export default function TabooGameApp() {
   const cards = [
     { word: 'Pizza', taboo: ['Forno', 'Mozzarella', 'Margherita', 'Impasto', 'Fetta'] },
     { word: 'Computer', taboo: ['Mouse', 'Tastiera', 'Schermo', 'PC', 'Internet'] },
@@ -55,242 +55,167 @@ export default function TabooGameApp() {
     { word: 'Netflix', taboo: ['Serie', 'Film', 'Streaming', 'TV', 'Abbonamento'] },
     { word: 'YouTube', taboo: ['Video', 'Canale', 'Creator', 'Streaming', 'Like'] },
     { word: 'Palestra', taboo: ['Allenamento', 'Pesi', 'Fitness', 'Muscoli', 'Cardio'] },
-    { word: 'Vacanza', taboo: ['Viaggio', 'Hotel', 'Mare', 'Relax', 'Estate'] },
-    { word: 'Camicia', taboo: ['Bottoni', 'Colletto', 'Vestiti', 'Maniche', 'Elegante'] },
-    { word: 'Scarpe', taboo: ['Piedi', 'Lacci', 'Suola', 'Camminare', 'Sneakers'] },
-    { word: 'Profumo', taboo: ['Odore', 'Fragranza', 'Spray', 'Boccetta', 'Essenza'] },
-    { word: 'Matrimonio', taboo: ['Sposa', 'Anelli', 'Chiesa', 'Cerimonia', 'Ricevimento'] },
-    { word: 'Banca', taboo: ['Soldi', 'Conto', 'Carta', 'Prestito', 'Bancomat'] },
-    { word: 'Supermercato', taboo: ['Spesa', 'Carrello', 'Cassa', 'Prodotti', 'Corsia'] },
-    { word: 'Polizia', taboo: ['Agente', 'Sirena', 'Legge', 'Divisa', 'Arresto'] },
-    { word: 'Fuoco', taboo: ['Caldo', 'Fiamma', 'Bruciare', 'Legna', 'Incendio'] },
-    { word: 'Neve', taboo: ['Freddo', 'Bianco', 'Sci', 'Inverno', 'Fiocchi'] },
-    { word: 'Computer Fisso', taboo: ['Desktop', 'Monitor', 'Mouse', 'PC', 'Scrivania'] },
-    { word: 'Parrucchiere', taboo: ['Capelli', 'Taglio', 'Forbici', 'Pettine', 'Salone'] },
-    { word: 'Bambino', taboo: ['Piccolo', 'Giocattolo', 'Scuola', 'Genitori', 'Neonato'] },
-    { word: 'Cuscino', taboo: ['Letto', 'Dormire', 'Morbido', 'Testa', 'Federa'] },
-    { word: 'Pizza Margherita', taboo: ['Pomodoro', 'Mozzarella', 'Basilico', 'Forno', 'Italia'] },
-    { word: 'Arancia', taboo: ['Agrume', 'Spremuta', 'Frutta', 'Vitamina', 'Buccia'] },
-    { word: 'Yogurt', taboo: ['Latte', 'Colazione', 'Bianco', 'Frigo', 'Cucchiaio'] },
-    { word: 'Pianoforte', taboo: ['Tasti', 'Musica', 'Suonare', 'Nero', 'Bianco'] },
-    { word: 'Benzina', taboo: ['Auto', 'Carburante', 'Pompa', 'Diesel', 'Motore'] },
-    { word: 'Spiaggia', taboo: ['Mare', 'Sabbia', 'Ombrellone', 'Estate', 'Costume'] },
-    { word: 'Albero', taboo: ['Foglie', 'Tronco', 'Rami', 'Foresta', 'Pianta'] },
-    { word: 'Cioccolato', taboo: ['Dolce', 'Cacao', 'Barretta', 'Latte', 'Fondente'] },
-    { word: 'Hamburger', taboo: ['Panino', 'Carne', 'Fast food', 'Patatine', 'McDonalds'] },
-    { word: 'Forchetta', taboo: ['Mangiare', 'Posate', 'Cucchiaio', 'Coltello', 'Tavola'] },
-    { word: 'Letto', taboo: ['Dormire', 'Materasso', 'Cuscino', 'Camera', 'Lenzuola'] },
-    { word: 'Computer Gaming', taboo: ['RGB', 'Mouse', 'Tastiera', 'FPS', 'Monitor'] },
-    { word: 'Drone', taboo: ['Volare', 'Telecamera', 'Eliche', 'Radio', 'Aereo'] },
-    { word: 'Yamaha', taboo: ['Moto', 'Motore', 'R6', 'Giappone', 'Due ruote'] },
-    { word: 'Ferrari', taboo: ['Auto', 'Rossa', 'Formula 1', 'Lusso', 'Cavallino'] },
-    { word: 'Formula 1', taboo: ['Pilota', 'Gara', 'Auto', 'Circuito', 'Pit stop'] },
-    { word: 'Moto', taboo: ['Casco', 'Due ruote', 'Motore', 'Velocità', 'Manubrio'] },
-    { word: 'Sicilia', taboo: ['Catania', 'Mare', 'Etna', 'Isola', 'Arancino'] },
-    { word: 'Etna', taboo: ['Vulcano', 'Catania', 'Lava', 'Sicilia', 'Montagna'] },
-    { word: 'Cucina', taboo: ['Cibo', 'Fornelli', 'Pentola', 'Casa', 'Chef'] },
-    { word: 'Chef', taboo: ['Cucina', 'Ristorante', 'Cibo', 'Cuoco', 'Ricetta'] },
-    { word: 'Ristorante', taboo: ['Mangiare', 'Menu', 'Chef', 'Cameriere', 'Prenotazione'] },
-    { word: 'Hotel', taboo: ['Camera', 'Vacanza', 'Reception', 'Letto', 'Turista'] },
-    { word: 'Ascensore', taboo: ['Piani', 'Bottoni', 'Salire', 'Scendere', 'Edificio'] },
-    { word: 'Semaforo', taboo: ['Rosso', 'Verde', 'Auto', 'Strada', 'Incrocio'] },
-    { word: 'Internet', taboo: ['WiFi', 'Online', 'Browser', 'Sito', 'Connessione'] },
-    { word: 'Email', taboo: ['Messaggio', 'Posta', 'Gmail', 'Inviare', 'Inbox'] },
-    { word: 'ChatGPT', taboo: ['AI', 'OpenAI', 'Chatbot', 'Intelligenza', 'Risposte'] },
-    { word: 'Amazon', taboo: ['Pacco', 'Ordine', 'Shopping', 'Prime', 'Consegna'] },
-    { word: 'Spotify', taboo: ['Musica', 'Playlist', 'Streaming', 'Canzoni', 'Podcast'] },
-    { word: 'Apple', taboo: ['iPhone', 'Mac', 'iOS', 'Steve Jobs', 'Mela'] },
-    { word: 'Samsung', taboo: ['Galaxy', 'Android', 'Telefono', 'Corea', 'TV'] },
-    { word: 'iPhone', taboo: ['Apple', 'iOS', 'Telefono', 'Smartphone', 'App'] },
-    { word: 'Android', taboo: ['Google', 'Telefono', 'Sistema', 'App', 'Smartphone'] },
-    { word: 'Google', taboo: ['Ricerca', 'Internet', 'Chrome', 'Android', 'Motore'] },
-    { word: 'Facebook', taboo: ['Social', 'Like', 'Post', 'Meta', 'Amici'] },
-    { word: 'Telegram', taboo: ['Chat', 'Messaggi', 'Canale', 'App', 'Gruppo'] },
-    { word: 'Discord', taboo: ['Server', 'Chat', 'Gaming', 'Voce', 'Canale'] },
-    { word: 'Lego', taboo: ['Mattoncini', 'Costruire', 'Gioco', 'Colori', 'Bambini'] },
-    { word: 'Pokemon', taboo: ['Pikachu', 'Anime', 'Carte', 'Nintendo', 'Allenatore'] },
-    { word: 'Minecraft', taboo: ['Blocchi', 'Costruire', 'Creeper', 'Survival', 'Mojang'] },
-    { word: 'Fortnite', taboo: ['Battle Royale', 'Epic Games', 'Skin', 'Costruire', 'Victory'] }
+    { word: 'Vacanza', taboo: ['Viaggio', 'Hotel', 'Mare', 'Relax', 'Estate'] }
   ];
 
-  const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
-  const [shuffledCards, setShuffledCards] = useState(shuffleArray(cards));
+  const [cardsState, setCardsState] = useState(shuffle(cards));
   const [index, setIndex] = useState(0);
   const [team, setTeam] = useState(1);
   const [scores, setScores] = useState({ 1: 0, 2: 0 });
   const [tabooScores, setTabooScores] = useState({ 1: 0, 2: 0 });
-  const [timeLeft, setTimeLeft] = useState(60);
+
   const [roundTime, setRoundTime] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(60);
+
   const [maxPasses, setMaxPasses] = useState(3);
   const [passesLeft, setPassesLeft] = useState(3);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const currentCard = shuffledCards[index];
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const current = cardsState[index];
 
   useEffect(() => {
-    if (!isPlaying || timeLeft <= 0) return;
+    if (!isPlaying || isPaused) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
+      setTimeLeft((t) => {
+        if (t <= 1) {
           clearInterval(timer);
           nextTurn();
           return 0;
         }
-        return prev - 1;
+        return t - 1;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isPlaying, timeLeft]);
+  }, [isPlaying, isPaused]);
 
   const startGame = () => {
+    const confirmStart = window.confirm("Vuoi iniziare il round?");
+    if (!confirmStart) return;
+
+    setCardsState(shuffle(cards));
+    setIndex(0);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
     setTeam(1);
     setTimeLeft(roundTime);
     setPassesLeft(maxPasses);
-    setIndex(0);
-    setShuffledCards(shuffleArray(cards));
     setIsPlaying(true);
+    setIsPaused(false);
   };
 
-  const nextCard = () => {
-    setIndex((prev) => (prev + 1) % shuffledCards.length);
-  };
+  const nextCard = () => setIndex((i) => (i + 1) % cardsState.length);
 
-  const guessedCorrectly = () => {
-    setScores((prev) => ({ ...prev, [team]: prev[team] + 1 }));
+  const correct = () => {
+    setScores((s) => ({ ...s, [team]: s[team] + 1 }));
     nextCard();
   };
 
-  const tabooPressed = () => {
-    setTabooScores((prev) => ({ ...prev, [team]: prev[team] + 1 }));
+  const taboo = () => {
+    setTabooScores((s) => ({ ...s, [team]: s[team] + 1 }));
     nextCard();
   };
 
-  const passCard = () => {
-    if (passesLeft > 0) {
-      setPassesLeft((prev) => prev - 1);
-      nextCard();
-    }
+  const pass = () => {
+    if (passesLeft <= 0) return;
+    setPassesLeft((p) => p - 1);
+    nextCard();
   };
 
   const nextTurn = () => {
-    setTeam((prev) => (prev === 1 ? 2 : 1));
+    setTeam((t) => (t === 1 ? 2 : 1));
     setTimeLeft(roundTime);
     setPassesLeft(maxPasses);
-    setIsPlaying(true);
+    setIsPaused(false);
+  };
+
+  const togglePause = () => {
+    setIsPaused((p) => !p);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
+    <div className="min-h-screen p-6 bg-gray-100 flex flex-col items-center">
       <div className="max-w-3xl w-full bg-white rounded-3xl shadow-xl p-6">
         <h1 className="text-4xl font-bold text-center mb-6">🎭 Taboo Game</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-gray-50 p-4 rounded-2xl">
-            <h2 className="text-xl font-semibold mb-2">⚙️ Impostazioni</h2>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="p-4 bg-gray-50 rounded-2xl">
+            <h2 className="font-bold mb-3">⚙️ Setup</h2>
 
-            <label className="block mb-3">
-              <span className="text-sm font-medium">Tempo turno (secondi)</span>
-              <input
-                type="number"
-                value={roundTime}
-                onChange={(e) => setRoundTime(Number(e.target.value))}
-                className="w-full mt-1 p-2 border rounded-xl"
-              />
-            </label>
+            <input
+              type="number"
+              value={roundTime}
+              onChange={(e) => setRoundTime(Number(e.target.value))}
+              className="w-full p-2 border rounded-xl mb-3"
+              placeholder="Tempo round"
+            />
 
-            <label className="block mb-3">
-              <span className="text-sm font-medium">Numero passi</span>
-              <input
-                type="number"
-                value={maxPasses}
-                onChange={(e) => setMaxPasses(Number(e.target.value))}
-                className="w-full mt-1 p-2 border rounded-xl"
-              />
-            </label>
+            <input
+              type="number"
+              value={maxPasses}
+              onChange={(e) => setMaxPasses(Number(e.target.value))}
+              className="w-full p-2 border rounded-xl mb-3"
+              placeholder="Passaggi"
+            />
 
             <button
               onClick={startGame}
-              className="w-full bg-black text-white py-3 rounded-2xl font-semibold hover:scale-105 transition"
+              className="w-full bg-black text-white py-3 rounded-2xl"
             >
-              Inizia partita
+              Inizia round
             </button>
           </div>
 
-          <div className="bg-gray-50 p-4 rounded-2xl">
-            <h2 className="text-xl font-semibold mb-3">🏆 Punteggio</h2>
-            <div className="space-y-3 text-lg">
-              <div className="flex justify-between">
-                <span>Squadra 1</span>
-                <span>{scores[1]} punti</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Squadra 2</span>
-                <span>{scores[2]} punti</span>
-              </div>
-              <div className="flex justify-between text-red-500">
-                <span>Penalità S1</span>
-                <span>{tabooScores[1]}</span>
-              </div>
-              <div className="flex justify-between text-red-500">
-                <span>Penalità S2</span>
-                <span>{tabooScores[2]}</span>
-              </div>
-            </div>
+          <div className="p-4 bg-gray-50 rounded-2xl">
+            <h2 className="font-bold mb-3">🏆 Score</h2>
+            <p>Squadra 1: {scores[1]}</p>
+            <p>Squadra 2: {scores[2]}</p>
+            <p className="text-red-500">Taboo S1: {tabooScores[1]}</p>
+            <p className="text-red-500">Taboo S2: {tabooScores[2]}</p>
           </div>
         </div>
 
-        <div className="bg-black text-white rounded-3xl p-6 text-center mb-6">
-          <div className="flex justify-between mb-4 text-lg">
-            <span>👥 Turno: Squadra {team}</span>
-            <span>⏱️ {timeLeft}s</span>
+        <div className="bg-black text-white p-6 rounded-3xl text-center">
+          <div className="flex justify-between mb-3">
+            <span>Squadra {team}</span>
+            <span>{timeLeft}s</span>
           </div>
 
-          <div className="text-5xl font-bold mb-6">{currentCard.word}</div>
+          <h2 className="text-4xl font-bold mb-4">{current?.word}</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-            {currentCard.taboo.map((word, i) => (
-              <div key={i} className="bg-red-500 rounded-xl py-2 text-lg font-semibold">
-                🚫 {word}
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {current?.taboo.map((w, i) => (
+              <div key={i} className="bg-red-500 p-2 rounded-xl">
+                🚫 {w}
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <button
-              onClick={passCard}
-              disabled={passesLeft <= 0}
-              className="bg-yellow-400 text-black py-3 rounded-2xl font-bold disabled:opacity-40"
-            >
-              ⏭️ Passo ({passesLeft})
+          <div className="grid grid-cols-3 gap-2">
+            <button onClick={pass} className="bg-yellow-400 text-black rounded-xl p-3">
+              Passo ({passesLeft})
             </button>
-
-            <button
-              onClick={tabooPressed}
-              className="bg-red-600 py-3 rounded-2xl font-bold"
-            >
-              🚫 TABOO
+            <button onClick={taboo} className="bg-red-600 rounded-xl p-3">
+              TABOO
             </button>
-
-            <button
-              onClick={guessedCorrectly}
-              className="bg-green-600 py-3 rounded-2xl font-bold"
-            >
-              ✅ Corretta
+            <button onClick={correct} className="bg-green-600 rounded-xl p-3">
+              OK
             </button>
           </div>
-        </div>
 
-        <div className="text-center text-gray-500 text-sm">
-          Oltre 100 parole incluse • Turni automatici • Squadre personalizzabili
+          <button
+            onClick={togglePause}
+            className="mt-4 bg-gray-700 px-4 py-2 rounded-xl"
+          >
+            {isPaused ? "Riprendi" : "Pausa"}
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-// LOL
