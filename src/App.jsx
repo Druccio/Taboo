@@ -186,7 +186,7 @@ function WinnerScreen({ scores, tabooScores, onRestart }) {
   const winner = net1 > net2 ? 1 : 2;
   const loser = winner === 1 ? 2 : 1;
 
-  const Medal = ({ team, net, correct, taboo, isWinner }) => (
+  const MedalComponent = ({ team, net, correct, taboo, isWinner }) => (
     <div style={{
       background: isWinner ? '#111' : '#f5f5f5',
       color: isWinner ? '#fff' : '#333',
@@ -243,13 +243,13 @@ function WinnerScreen({ scores, tabooScores, onRestart }) {
         <div style={{ display: 'flex', gap: 12, marginBottom: 32 }}>
           {tied ? (
             <>
-              <Medal team={1} net={net1} correct={scores[1]} taboo={tabooScores[1]} isWinner={false} />
-              <Medal team={2} net={net2} correct={scores[2]} taboo={tabooScores[2]} isWinner={false} />
+              <MedalComponent team={1} net={net1} correct={scores[1]} taboo={tabooScores[1]} isWinner={false} />
+              <MedalComponent team={2} net={net2} correct={scores[2]} taboo={tabooScores[2]} isWinner={false} />
             </>
           ) : (
             <>
-              <Medal team={winner} net={winner === 1 ? net1 : net2} correct={scores[winner]} taboo={tabooScores[winner]} isWinner={true} />
-              <Medal team={loser} net={loser === 1 ? net1 : net2} correct={scores[loser]} taboo={tabooScores[loser]} isWinner={false} />
+              <MedalComponent team={winner} net={winner === 1 ? net1 : net2} correct={scores[winner]} taboo={tabooScores[winner]} isWinner={true} />
+              <MedalComponent team={loser} net={loser === 1 ? net1 : net2} correct={scores[loser]} taboo={tabooScores[loser]} isWinner={false} />
             </>
           )}
         </div>
@@ -293,7 +293,8 @@ export default function TabooGameApp() {
 
   const timerRef = useRef(null);
 
-  const current = cardsState[index] || cardsState[0];
+  // Fix: Evitiamo letture undefined estraendo in sicurezza
+  const current = cardsState.length > 0 ? cardsState[index] : null;
 
   // ── Timer ──────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -315,7 +316,11 @@ export default function TabooGameApp() {
   }, [phase, isPaused]);
 
   // ── Actions ────────────────────────────────────────────────────────────────
-  const nextCard = () => setIndex((i) => (i + 1) % cardsState.length);
+  const nextCard = () => {
+    if (cardsState.length > 0) {
+      setIndex((i) => (i + 1) % cardsState.length);
+    }
+  };
 
   const correct = () => {
     setScores((s) => ({ ...s, [team]: s[team] + 1 }));
@@ -337,14 +342,15 @@ export default function TabooGameApp() {
 
   // ── Start game (first team) ────────────────────────────────────────────────
   const startGame = () => {
-    setCardsState(shuffle(ALL_CARDS));
+    // Fix: Cambiato ALL_CARDS con l'array corretto `cards`
+    setCardsState(shuffle(cards));
     setIndex(0);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
     setTurnScores({ 1: 0, 2: 0 });
     setTurnTaboo({ 1: 0, 2: 0 });
     setTeam(1);
-    setTimeLeft(roundTime);          // use current roundTime setting
+    setTimeLeft(roundTime);          
     setPassesLeft(maxPasses);
     setIsPaused(false);
     setPhase('playing');
@@ -354,7 +360,7 @@ export default function TabooGameApp() {
   const continueTurn = () => {
     const nextTeam = team === 1 ? 2 : 1;
     setTeam(nextTeam);
-    setTimeLeft(roundTime);          // always reset to the configured roundTime
+    setTimeLeft(roundTime);          
     setPassesLeft(maxPasses);
     setTurnScores({ 1: 0, 2: 0 });
     setTurnTaboo({ 1: 0, 2: 0 });
@@ -369,6 +375,7 @@ export default function TabooGameApp() {
     setTeam(1);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
+    setTimeLeft(roundTime);
   };
 
   // ── Timer color ────────────────────────────────────────────────────────────
@@ -405,7 +412,11 @@ export default function TabooGameApp() {
             <input
               type="number"
               value={roundTime}
-              onChange={(e) => setRoundTime(Math.max(5, Number(e.target.value)))}
+              onChange={(e) => {
+                const val = Math.max(5, Number(e.target.value));
+                setRoundTime(val);
+                if (phase === 'setup') setTimeLeft(val);
+              }}
               disabled={phase === 'playing'}
               className="w-full p-2 border rounded-xl mb-3"
             />
@@ -477,11 +488,11 @@ export default function TabooGameApp() {
           </div>
 
           <h2 className="text-4xl font-bold mb-4">
-            {phase === 'playing' ? current?.word : '?'}
+            {phase === 'playing' && current ? current.word : '?'}
           </h2>
 
           <div className="grid grid-cols-2 gap-2 mb-4">
-            {(phase === 'playing' ? current?.taboo : ['—', '—', '—', '—', '—']).map((w, i) => (
+            {(phase === 'playing' && current ? current.taboo : ['—', '—', '—', '—', '—']).map((w, i) => (
               <div key={i} className="bg-red-500 p-2 rounded-xl text-sm font-medium">
                 🚫 {w}
               </div>
@@ -492,21 +503,21 @@ export default function TabooGameApp() {
           <div className="grid grid-cols-3 gap-2 mb-3">
             <button
               onClick={pass}
-              disabled={phase !== 'playing' || passesLeft <= 0}
+              disabled={phase !== 'playing' || passesLeft <= 0 || isPaused}
               className="bg-yellow-400 text-black rounded-xl p-3 font-semibold disabled:opacity-40"
             >
               Passo ({phase === 'playing' ? passesLeft : maxPasses})
             </button>
             <button
               onClick={tabooHit}
-              disabled={phase !== 'playing'}
+              disabled={phase !== 'playing' || isPaused}
               className="bg-red-600 rounded-xl p-3 font-semibold disabled:opacity-40"
             >
               TABOO
             </button>
             <button
               onClick={correct}
-              disabled={phase !== 'playing'}
+              disabled={phase !== 'playing' || isPaused}
               className="bg-green-600 rounded-xl p-3 font-semibold disabled:opacity-40"
             >
               ✓ OK
