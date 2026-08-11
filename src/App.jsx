@@ -1,99 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
-const cards = [
-    { word: 'Pizza', taboo: ['Forno', 'Mozzarella', 'Margherita', 'Impasto', 'Fetta'] },
-    { word: 'Computer', taboo: ['Mouse', 'Tastiera', 'Schermo', 'PC', 'Internet'] },
-    { word: 'Mare', taboo: ['Spiaggia', 'Acqua', 'Onde', 'Estate', 'Sabbia'] },
-    { word: 'Calcio', taboo: ['Pallone', 'Goal', 'Squadra', 'Arbitro', 'Stadio'] },
-    { word: 'Telefono', taboo: ['Chiamata', 'Smartphone', 'Messaggio', 'App', 'Schermo'] },
-    { word: 'Gelato', taboo: ['Cono', 'Freddo', 'Gusto', 'Estate', 'Crema'] },
-    { word: 'Aereo', taboo: ['Volo', 'Pilota', 'Ali', 'Aeroporto', 'Cielo'] },
-    { word: 'Bicicletta', taboo: ['Pedali', 'Ruote', 'Catena', 'Casco', 'Bici'] },
-    { word: 'Scuola', taboo: ['Professore', 'Classe', 'Compiti', 'Studente', 'Banco'] },
-    { word: 'Cinema', taboo: ['Film', 'Popcorn', 'Schermo', 'Attore', 'Sala'] },
-    { word: 'Gatto', taboo: ['Miao', 'Felino', 'Coda', 'Baffi', 'Animale'] },
-    { word: 'Cane', taboo: ['Bau', 'Guinzaglio', 'Animale', 'Cuccia', 'Pelo'] },
-    { word: 'Montagna', taboo: ['Neve', 'Sci', 'Vetta', 'Escursione', 'Roccia'] },
-    { word: 'Libro', taboo: ['Pagine', 'Romanzo', 'Leggere', 'Copertina', 'Autore'] },
-    { word: 'Treno', taboo: ['Binari', 'Stazione', 'Locomotiva', 'Viaggio', 'Vagone'] },
-    { word: 'Musica', taboo: ['Canzone', 'Note', 'Cantante', 'Audio', 'Strumento'] },
-    { word: 'Banana', taboo: ['Frutta', 'Gialla', 'Scimmia', 'Buccia', 'Tropicale'] },
-    { word: 'Caffè', taboo: ['Espresso', 'Bar', 'Tazzina', 'Bevanda', 'Caffeina'] },
-    { word: 'Lampada', taboo: ['Luce', 'Interruttore', 'Tavolo', 'Illuminare', 'Bulbo'] },
-    { word: 'Giardino', taboo: ['Fiori', 'Erba', 'Piante', 'Cortile', 'Annaffiare'] },
-    { word: 'Orologio', taboo: ['Tempo', 'Lancette', 'Ora', 'Polso', 'Sveglia'] },
-    { word: 'Zaino', taboo: ['Spalle', 'Scuola', 'Cerniera', 'Borsa', 'Libri'] },
-    { word: 'Chitarra', taboo: ['Corde', 'Musica', 'Suonare', 'Strumento', 'Plettro'] },
-    { word: 'Pasta', taboo: ['Spaghetti', 'Pomodoro', 'Forchetta', 'Italia', 'Pranzo'] },
-    { word: 'Doctor', taboo: ['Medico', 'Ospedale', 'Paziente', 'Cura', 'Visita'] },
-    { word: 'Videogioco', taboo: ['Console', 'Joystick', 'Livello', 'Giocare', 'Schermo'] },
-    { word: 'Auto', taboo: ['Macchina', 'Ruote', 'Motore', 'Volante', 'Strada'] },
-    { word: 'Fiume', taboo: ['Acqua', 'Ponte', 'Corrente', 'Pesce', 'Lungo'] },
-    { word: 'Pane', taboo: ['Forno', 'Farina', 'Crosta', 'Panino', 'Impasto'] },
-    { word: 'Occhiali', taboo: ['Vista', 'Lenti', 'Montatura', 'Occhio', 'Sole'] },
-    { word: 'Dentista', taboo: ['Denti', 'Trapano', 'Studio', 'Carie', 'Sorriso'] },
-    { word: 'Tennis', taboo: ['Racchetta', 'Palla', 'Campo', 'Rete', 'Set'] },
-    { word: 'Computer Portatile', taboo: ['Laptop', 'Batteria', 'Schermo', 'Tastiera', 'Mouse'] },
-    { word: 'Fotocamera', taboo: ['Foto', 'Obiettivo', 'Scatto', 'Zoom', 'Immagine'] },
-    { word: 'Mela', taboo: ['Frutta', 'Rossa', 'Albero', 'Buccia', 'Morsicare'] },
-    { word: 'Università', taboo: ['Esame', 'Laurea', 'Studente', 'Professore', 'Facoltà'] },
-    { word: 'Farmacia', taboo: ['Medicine', 'Farmacista', 'Ricetta', 'Pillole', 'Croce'] },
-    { word: 'Barca', taboo: ['Mare', 'Nave', 'Acqua', 'Vela', 'Porto'] },
-    { word: 'Robot', taboo: ['Macchina', 'AI', 'Metallo', 'Automazione', 'Android'] },
-    { word: 'Ombrello', taboo: ['Pioggia', 'Acqua', 'Aprire', 'Temporale', 'Manico'] },
-    { word: 'Torta', taboo: ['Dolce', 'Candeline', 'Compleanno', 'Fetta', 'Crema'] },
-    { word: 'Luna', taboo: ['Notte', 'Spazio', 'Stelle', 'Satellitare', 'Piena'] },
-    { word: 'Sedia', taboo: ['Sedersi', 'Legno', 'Tavolo', 'Gambe', 'Schienale'] },
-    { word: 'Piscina', taboo: ['Nuotare', 'Acqua', 'Tuffo', 'Cloro', 'Costume'] },
-    { word: 'Panino', taboo: ['Pane', 'Prosciutto', 'Snack', 'Hamburger', 'Fast food'] },
-    { word: 'Frigorifero', taboo: ['Freddo', 'Cibo', 'Cucina', 'Ghiaccio', 'Porta'] },
-    { word: 'Aspirapolvere', taboo: ['Polvere', 'Pulire', 'Casa', 'Pavimento', 'Filtro'] },
-    { word: 'Whatsapp', taboo: ['Messaggi', 'Chat', 'Telefono', 'App', 'Online'] },
-    { word: 'Instagram', taboo: ['Foto', 'Social', 'Stories', 'Follower', 'Like'] },
-    { word: 'TikTok', taboo: ['Video', 'Social', 'Trend', 'Scroll', 'Creator'] },
-    { word: 'Netflix', taboo: ['Serie', 'Film', 'Streaming', 'TV', 'Abbonamento'] },
-    { word: 'YouTube', taboo: ['Video', 'Canale', 'Creator', 'Streaming', 'Like'] },
-    { word: 'Palestra', taboo: ['Allenamento', 'Pesi', 'Fitness', 'Muscoli', 'Cardio'] },
-    { word: 'Vacanza', taboo: ['Viaggio', 'Hotel', 'Mare', 'Relax', 'Estate'] },
-    { word: 'Sushi', taboo: ['Giappone', 'Riso', 'Pesce', 'Wasabi', 'Bacchette'] },
-    { word: 'Cappuccino', taboo: ['Caffè', 'Latte', 'Schiuma', 'Bar', 'Colazione'] },
-    { word: 'Hamburger', taboo: ['McDonald', 'Carne', 'Bun', 'Fast food', 'Ketchup'] },
-    { word: 'Vino', taboo: ['Bottiglia', 'Uva', 'Bicchiere', 'Rosso', 'Cantina'] },
-    { word: 'Cioccolato', taboo: ['Dolce', 'Cacao', 'Tavoletta', 'Fondente', 'Nutella'] },
-    { word: 'Risotto', taboo: ['Riso', 'Parmigiano', 'Padella', 'Milano', 'Brodo'] },
-    { word: 'Patatine', taboo: ['Fritte', 'Sacchetto', 'Salate', 'Snack', 'Croccanti'] },
-    { word: 'Intelligenza Artificiale', taboo: ['Chatbot', 'Algoritmo', 'Robot', 'Macchina', 'Digitale'] },
-    { word: 'Podcast', taboo: ['Audio', 'Spotify', 'Episodio', 'Ascolto', 'Microfono'] },
-    { word: 'Password', taboo: ['Sicurezza', 'Accesso', 'Login', 'Segreto', 'Account'] },
-    { word: 'Stampante', taboo: ['Carta', 'Inchiostro', 'Ufficio', 'Foglio', 'Stampa'] },
-    { word: 'Satellite', taboo: ['Spazio', 'Orbita', 'GPS', 'Segnale', 'Antenna'] },
-    { word: 'Cuffie', taboo: ['Musica', 'Audio', 'Orecchie', 'Wireless', 'Bluetooth'] },
-    { word: 'Nuoto', taboo: ['Piscina', 'Vasche', 'Stile libero', 'Costume', 'Acqua'] },
-    { word: 'Sci', taboo: ['Neve', 'Montagna', 'Piste', 'Discesa', 'Slalom'] },
-    { word: 'Pallavolo', taboo: ['Rete', 'Pallone', 'Battuta', 'Squadra', 'Campo'] },
-    { word: 'Maratona', taboo: ['Corsa', 'Km', 'Fatica', 'Allenamento', 'Gara'] },
-    { word: 'Boxe', taboo: ['Pugni', 'Ring', 'Guantoni', 'Knockout', 'Campione'] },
-    { word: 'Ciclismo', taboo: ['Bici', 'Giro', 'Salita', 'Maglia', 'Pedalare'] },
-    { word: 'Vulcano', taboo: ['Lava', 'Eruzione', 'Fuoco', 'Cenere', 'Etna'] },
-    { word: 'Farfalla', taboo: ['Ali', 'Bruco', 'Fiore', 'Volare', 'Insetto'] },
-    { word: 'Deserto', taboo: ['Sabbia', 'Caldo', 'Sahara', 'Cammello', 'Sete'] },
-    { word: 'Foresta', taboo: ['Alberi', 'Amazonia', 'Animali', 'Bosco', 'Verde'] },
-    { word: 'Terremoto', taboo: ['Scossa', 'Richter', 'Crollo', 'Sisma', 'Macerie'] },
-    { word: 'Arcobaleno', taboo: ['Colori', 'Pioggia', 'Sole', 'Cielo', 'Spettro'] },
-    { word: 'Teatro', taboo: ['Palcoscenico', 'Attori', 'Sipario', 'Commedia', 'Platea'] },
-    { word: 'Museo', taboo: ['Quadri', 'Arte', 'Scultura', 'Visita', 'Guida'] },
-    { word: 'Fumetto', taboo: ['Vignette', 'Supereroe', 'Balloons', 'Marvel', 'Disegno'] },
-    { word: 'Dizionario', taboo: ['Parole', 'Definizione', 'Vocabolario', 'Pagine', 'Alfabeto'] },
-    { word: 'Fotografia', taboo: ['Scatto', 'Foto', 'Luce', 'Obiettivo', 'Posa'] },
-    { word: 'Scultura', taboo: ['Marmo', 'Arte', 'Statua', 'Scalpello', 'Forma'] },
-    { word: 'Matrimonio', taboo: ['Sposi', 'Anello', 'Fede', 'Cerimonia', 'Chiesa'] },
-    { word: 'Compleanno', taboo: ['Candeline', 'Torta', 'Anni', 'Regalo', 'Festeggiare'] },
-    { word: 'Ospedale', taboo: ['Medico', 'Paziente', 'Corsia', 'Pronto soccorso', 'Infermiere'] },
-    { word: 'Supermercato', taboo: ['Spesa', 'Cassa', 'Carrello', 'Scaffale', 'Offerta'] },
-    { word: 'Aeroporto', taboo: ['Volo', 'Gate', 'Valigia', 'Check-in', 'Decollo'] },
-    { word: 'Banca', taboo: ['Soldi', 'Conto', 'ATM', 'Bancomat', 'Prestito'] },
-    { word: 'Ascensore', taboo: ['Piano', 'Bottone', 'Salire', 'Pulsante', 'Cabina'] }
-];
+import { decks } from "./cards";
 
 const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
 
@@ -178,15 +84,9 @@ function TurnEndModal({ team, roundScores, roundTaboo, onContinue, onEndGame }) 
   );
 }
 
-// ── Winner screen ──────────────────────────────────────────────────────────────
-function WinnerScreen({ scores, tabooScores, onRestart }) {
-  const net1 = scores[1] - tabooScores[1];
-  const net2 = scores[2] - tabooScores[2];
-  const tied = net1 === net2;
-  const winner = net1 > net2 ? 1 : 2;
-  const loser = winner === 1 ? 2 : 1;
-
-  const MedalComponent = ({ team, net, correct, taboo, isWinner }) => (
+// ── Winner screen components ───────────────────────────────────────────────────
+function MedalComponent({ team, net, correct, taboo, isWinner }) {
+  return (
     <div style={{
       background: isWinner ? '#111' : '#f5f5f5',
       color: isWinner ? '#fff' : '#333',
@@ -221,6 +121,15 @@ function WinnerScreen({ scores, tabooScores, onRestart }) {
       </div>
     </div>
   );
+}
+
+// ── Winner screen ──────────────────────────────────────────────────────────────
+function WinnerScreen({ scores, tabooScores, onRestart }) {
+  const net1 = scores[1] - tabooScores[1];
+  const net2 = scores[2] - tabooScores[2];
+  const tied = net1 === net2;
+  const winner = net1 > net2 ? 1 : 2;
+  const loser = winner === 1 ? 2 : 1;
 
   return (
     <div style={{
@@ -273,6 +182,7 @@ function WinnerScreen({ scores, tabooScores, onRestart }) {
 export default function TabooGameApp() {
   const [roundTime, setRoundTime] = useState(60);
   const [maxPasses, setMaxPasses] = useState(3);
+  const [selectedDeck, setSelectedDeck] = useState('Facile');
 
   // game phases: 'setup' | 'playing' | 'turnEnd' | 'finished'
   const [phase, setPhase] = useState('setup');
@@ -342,8 +252,7 @@ export default function TabooGameApp() {
 
   // ── Start game (first team) ────────────────────────────────────────────────
   const startGame = () => {
-    // Fix: Cambiato ALL_CARDS con l'array corretto `cards`
-    setCardsState(shuffle(cards));
+    setCardsState(shuffle(decks[selectedDeck]));
     setIndex(0);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
@@ -428,6 +337,16 @@ export default function TabooGameApp() {
               disabled={phase === 'playing'}
               className="w-full p-2 border rounded-xl mb-3"
             />
+            <label className="text-sm text-gray-500 block mb-1">Seleziona Mazzo (Deck)</label>
+            <select
+              value={selectedDeck}
+              onChange={(e) => setSelectedDeck(e.target.value)}
+              disabled={phase === 'playing'}
+              className="w-full p-2 bg-white border rounded-xl mb-3 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black"
+            >
+              <option value="Facile">🟢 Facile (100 parole)</option>
+              <option value="Difficile">🔴 Difficile (100 parole)</option>
+            </select>
             <button
               onClick={startGame}
               className="w-full bg-black text-white py-3 rounded-2xl font-semibold"
