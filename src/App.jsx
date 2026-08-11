@@ -274,6 +274,7 @@ export default function TabooGameApp() {
     setTurnScores({ 1: 0, 2: 0 });
     setTurnTaboo({ 1: 0, 2: 0 });
     setIsPaused(false);
+    nextCard(); // Passa alla parola successiva per il nuovo turno
     setPhase('playing');
   };
 
