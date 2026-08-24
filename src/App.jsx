@@ -463,8 +463,16 @@ export default function TabooGameApp() {
   const [popup, setPopup] = useState(null);
 
   const timerRef = useRef(null);
+  const stageRef = useRef(null);
 
   const current = cardsState.length > 0 ? cardsState[index] : null;
+
+  // ── Auto-scroll alla card della parola ogni volta che parte un turno ────────
+  useEffect(() => {
+    if (phase === "playing") {
+      stageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [phase]);
 
   // ── Timer ──────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -709,7 +717,7 @@ export default function TabooGameApp() {
         </div>
 
         {/* Game stage card */}
-        <div style={{ position: "relative" }}>
+        <div ref={stageRef} style={{ position: "relative", scrollMarginTop: "1rem" }}>
           <div style={{
             position: "absolute", inset: -18,
             background: `radial-gradient(circle at 50% 0%, ${team === 1 ? "rgba(244,180,0,.22)" : "rgba(23,195,178,.22)"}, transparent 70%)`,
