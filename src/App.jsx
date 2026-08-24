@@ -4,60 +4,7 @@ import {
   RotateCcw, Settings, Plus, Minus, Flag,
 } from "lucide-react";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 🔧 NOTA per il tuo progetto:
-// Nel tuo progetto reale hai già `import { decks } from "./cards";` con i tuoi
-// 100 termini per mazzo. Questa anteprima (artifact) non ha accesso al tuo file
-// cards.js, quindi qui sotto ho messo un mazzo ridotto SOLO per far funzionare
-// la demo. Quando riporti questo file nel tuo progetto:
-//   1) cancella il blocco `const decks = {...}` qui sotto
-//   2) decommenta la riga:  import { decks } from "./cards";
-// Tutta la logica di gioco (punteggi, timer, passaggi, turni) è rimasta identica.
-// ─────────────────────────────────────────────────────────────────────────────
-// import { decks } from "./cards";
-
-const decks = {
-  "Facile": [
-    { word: "Cane", taboo: ["Animale", "Abbaiare", "Gatto", "Zampa", "Cucciolo"] },
-    { word: "Sole", taboo: ["Caldo", "Cielo", "Luce", "Giorno", "Estate"] },
-    { word: "Pizza", taboo: ["Italiana", "Formaggio", "Forno", "Pomodoro", "Napoli"] },
-    { word: "Scuola", taboo: ["Studenti", "Maestro", "Libri", "Compiti", "Banco"] },
-    { word: "Mare", taboo: ["Acqua", "Spiaggia", "Onde", "Pesce", "Blu"] },
-    { word: "Bicicletta", taboo: ["Ruote", "Pedalare", "Sella", "Casco", "Catena"] },
-    { word: "Gelato", taboo: ["Freddo", "Cono", "Estate", "Cioccolato", "Vaniglia"] },
-    { word: "Calcio", taboo: ["Pallone", "Squadra", "Rete", "Stadio", "Arbitro"] },
-  ],
-  "Facile 2": [
-    { word: "Telefono", taboo: ["Chiamare", "Numero", "Schermo", "App", "Squillo"] },
-    { word: "Libro", taboo: ["Leggere", "Pagine", "Autore", "Biblioteca", "Copertina"] },
-    { word: "Cucina", taboo: ["Cibo", "Fornello", "Pentola", "Chef", "Ricetta"] },
-    { word: "Aeroporto", taboo: ["Aereo", "Volo", "Valigia", "Pilota", "Bagaglio"] },
-    { word: "Natale", taboo: ["Albero", "Regali", "Babbo", "Dicembre", "Neve"] },
-    { word: "Chitarra", taboo: ["Corde", "Musica", "Suonare", "Concerto", "Rock"] },
-    { word: "Ospedale", taboo: ["Medico", "Malato", "Infermiere", "Pronto Soccorso", "Ambulanza"] },
-    { word: "Vacanza", taboo: ["Viaggio", "Mare", "Valigia", "Relax", "Estate"] },
-  ],
-  "Intermedio": [
-    { word: "Gelosia", taboo: ["Sentimento", "Coppia", "Invidia", "Tradimento", "Emozione"] },
-    { word: "Democrazia", taboo: ["Voto", "Governo", "Popolo", "Elezioni", "Politica"] },
-    { word: "Nostalgia", taboo: ["Ricordo", "Passato", "Malinconia", "Infanzia", "Emozione"] },
-    { word: "Innovazione", taboo: ["Tecnologia", "Nuovo", "Idea", "Progresso", "Invenzione"] },
-    { word: "Equilibrio", taboo: ["Bilancia", "Stabilità", "Yoga", "Centro", "Peso"] },
-    { word: "Coraggio", taboo: ["Paura", "Eroe", "Forza", "Affrontare", "Valore"] },
-    { word: "Sostenibilità", taboo: ["Ambiente", "Ecologia", "Riciclo", "Pianeta", "Verde"] },
-    { word: "Curiosità", taboo: ["Domanda", "Scoprire", "Interesse", "Bambino", "Perché"] },
-  ],
-  "Difficile": [
-    { word: "Serendipità", taboo: ["Caso", "Fortuna", "Scoperta", "Inaspettato", "Coincidenza"] },
-    { word: "Procrastinazione", taboo: ["Rimandare", "Pigrizia", "Domani", "Scadenza", "Ritardo"] },
-    { word: "Paradosso", taboo: ["Contraddizione", "Logica", "Illogico", "Assurdo", "Filosofia"] },
-    { word: "Empatia", taboo: ["Comprendere", "Emozioni", "Altri", "Sentire", "Compassione"] },
-    { word: "Burocrazia", taboo: ["Uffici", "Documenti", "Modulo", "Attesa", "Timbro"] },
-    { word: "Algoritmo", taboo: ["Computer", "Passi", "Programma", "Calcolo", "Codice"] },
-    { word: "Meritocrazia", taboo: ["Merito", "Talento", "Successo", "Lavoro", "Giusto"] },
-    { word: "Dilemma", taboo: ["Scelta", "Difficile", "Decisione", "Due", "Problema"] },
-  ],
-};
+import { decks } from "./cards";
 
 const DECKS_META = [
   { key: "Facile", label: "Facile", hex: "#3FCF7F" },
