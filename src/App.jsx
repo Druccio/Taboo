@@ -346,6 +346,8 @@ export default function TabooGameApp() {
               className="w-full p-2 bg-white border rounded-xl mb-3 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="Facile">🟢 Facile (100 parole)</option>
+              <option value="Facile 2">🟢 Facile 2 (100 parole)</option>
+              <option value="Intermedio">🟡 Intermedio (100 parole)</option>
               <option value="Difficile">🔴 Difficile (100 parole)</option>
             </select>
             <button
