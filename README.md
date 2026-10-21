@@ -20,7 +20,11 @@ Le idee pianificate per le prossime versioni del gioco sono dettagliate nel docu
 
 1. **Scelta del numero di turni** prima dell'inizio della partita con conteggio round e termine automatico.
 2. **Menù a tendina (dropdown)** per la selezione rapida della difficoltà e della tipologia di mazzo.
-3. **Espansione dei mazzi e deck a tema**, a partire da un mazzo speciale a tema **Disney** e cultura pop, con architettura modulare per facilitare l'aggiunta di nuovi mazzi.
+3. **Espansione dei mazzi e deck a tema** (es. speciale a tema *Disney* e cultura pop).
+4. **Modalità Mazzo Misto (Shuffle All)** per unire e giocare più mazzi contemporaneamente.
+5. **Feedback sonoro & tattile (Web Audio & Haptic)**: suoni procedurali leggeri e vibrazione su mobile.
+6. **Personalizzazione squadre**: nomi personalizzati e supporto per 3 o 4 squadre a rotazione.
+7. **Var Taboo & Statistiche**: revisione carte a fine turno e statistiche dettagliate di performance nella schermata finale.
 
 ---
 
