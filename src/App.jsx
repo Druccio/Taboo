@@ -263,9 +263,10 @@ function Modal({ children }) {
 }
 
 // ── End-of-turn popup ────────────────────────────────────────────────────────
-function TurnEndModal({ team, roundScores, roundTaboo, onContinue, onEndGame }) {
+function TurnEndModal({ team, roundScores, roundTaboo, onContinue, onEndGame, currentRound, maxRounds, isLastTurn }) {
   const net = (roundScores[team] || 0) - (roundTaboo[team] || 0);
   const tc = TEAM_COLORS[team];
+  const nextTeam = team === 1 ? 2 : 1;
   return (
     <Modal>
       <div className="animate-scaleIn font-body" style={{
@@ -283,9 +284,14 @@ function TurnEndModal({ team, roundScores, roundTaboo, onContinue, onEndGame }) 
         <h2 className="font-display" style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>
           Tempo scaduto!
         </h2>
-        <p style={{ color: "var(--muted)", marginBottom: 20 }}>
+        <p style={{ color: "var(--muted)", marginBottom: 6 }}>
           Fine turno — <strong style={{ color: "var(--cream)" }}>Squadra {team}</strong>
         </p>
+        {maxRounds > 0 && (
+          <p className="font-mono" style={{ color: "var(--muted)", fontSize: 12, marginBottom: 14 }}>
+            Turno {currentRound} di {maxRounds}
+          </p>
+        )}
 
         <div style={{
           background: "var(--ink)", borderRadius: 16, padding: "1rem",
@@ -312,24 +318,36 @@ function TurnEndModal({ team, roundScores, roundTaboo, onContinue, onEndGame }) 
           </div>
         </div>
 
-        <PressableButton
-          onClick={onContinue}
-          colorBg={tc.css} colorShadow={tc.dark}
-          className="w-full mb-2.5" style={{ fontSize: 15, width: "100%" }}
-        >
-          <Play size={17} /> Avvia turno Squadra {team === 1 ? 2 : 1}
-        </PressableButton>
-        <button
-          onClick={onEndGame}
-          className="font-body"
-          style={{
-            width: "100%", padding: "11px", borderRadius: 14,
-            background: "transparent", color: "var(--muted)", fontWeight: 600,
-            fontSize: 13, border: "1px solid rgba(255,255,255,.14)", cursor: "pointer",
-          }}
-        >
-          Termina partita
-        </button>
+        {isLastTurn ? (
+          <PressableButton
+            onClick={onEndGame}
+            colorBg="var(--gold)" colorShadow="var(--gold-dark)"
+            className="w-full" style={{ fontSize: 15, width: "100%" }}
+          >
+            <Trophy size={17} /> Risultati finali
+          </PressableButton>
+        ) : (
+          <>
+            <PressableButton
+              onClick={onContinue}
+              colorBg={TEAM_COLORS[nextTeam].css} colorShadow={TEAM_COLORS[nextTeam].dark}
+              className="w-full mb-2.5" style={{ fontSize: 15, width: "100%" }}
+            >
+              <Play size={17} /> Avvia turno Squadra {nextTeam}
+            </PressableButton>
+            <button
+              onClick={onEndGame}
+              className="font-body"
+              style={{
+                width: "100%", padding: "11px", borderRadius: 14,
+                background: "transparent", color: "var(--muted)", fontWeight: 600,
+                fontSize: 13, border: "1px solid rgba(255,255,255,.14)", cursor: "pointer",
+              }}
+            >
+              Termina partita
+            </button>
+          </>
+        )}
       </div>
     </Modal>
   );
@@ -440,6 +458,7 @@ function WinnerScreen({ scores, tabooScores, onRestart }) {
 export default function TabooGameApp() {
   const [roundTime, setRoundTime] = useState(60);
   const [maxPasses, setMaxPasses] = useState(3);
+  const [maxRounds, setMaxRounds] = useState(3);
   const [selectedDeck, setSelectedDeck] = useState("Facile");
 
   // game phases: 'setup' | 'playing' | 'turnEnd' | 'finished'
@@ -448,6 +467,7 @@ export default function TabooGameApp() {
   const [cardsState, setCardsState] = useState([]);
   const [index, setIndex] = useState(0);
   const [team, setTeam] = useState(1);                     // active team
+  const [currentRound, setCurrentRound] = useState(1);     // current round number
   const [scores, setScores] = useState({ 1: 0, 2: 0 });    // cumulative
   const [tabooScores, setTabooScores] = useState({ 1: 0, 2: 0 });
 
@@ -537,6 +557,7 @@ export default function TabooGameApp() {
     setTurnScores({ 1: 0, 2: 0 });
     setTurnTaboo({ 1: 0, 2: 0 });
     setTeam(1);
+    setCurrentRound(1);
     setTimeLeft(roundTime);
     setPassesLeft(maxPasses);
     setIsPaused(false);
@@ -546,6 +567,10 @@ export default function TabooGameApp() {
   // ── Continue to next team's turn ───────────────────────────────────────────
   const continueTurn = () => {
     const nextTeam = team === 1 ? 2 : 1;
+    // Increment round after Team 2 finishes (both teams played)
+    if (team === 2) {
+      setCurrentRound((r) => r + 1);
+    }
     setTeam(nextTeam);
     setTimeLeft(roundTime);
     setPassesLeft(maxPasses);
@@ -556,11 +581,15 @@ export default function TabooGameApp() {
     setPhase("playing");
   };
 
+  // Check if this is the last turn of the game (maxRounds > 0 = limited rounds)
+  const isLastTurn = maxRounds > 0 && team === 2 && currentRound >= maxRounds;
+
   const endGame = () => setPhase("finished");
 
   const restart = () => {
     setPhase("setup");
     setTeam(1);
+    setCurrentRound(1);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
     setTimeLeft(roundTime);
@@ -592,6 +621,9 @@ export default function TabooGameApp() {
           roundTaboo={turnTaboo}
           onContinue={continueTurn}
           onEndGame={endGame}
+          currentRound={currentRound}
+          maxRounds={maxRounds}
+          isLastTurn={isLastTurn}
         />
       )}
 
@@ -656,6 +688,13 @@ export default function TabooGameApp() {
               min={0} step={1}
               disabled={phase === "playing"}
               onChange={(val) => setMaxPasses(Math.max(0, val))}
+            />
+            <Stepper
+              label="Turni per squadra"
+              value={maxRounds}
+              min={1} step={1}
+              disabled={phase === "playing"}
+              onChange={(val) => setMaxRounds(Math.max(1, val))}
             />
 
             <label className="font-body block mb-1" style={{ fontSize: 11, color: "#8a8371", fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.6 }}>
@@ -749,15 +788,26 @@ export default function TabooGameApp() {
               ))}
             </div>
 
-            {/* team pill + pause badge + timer digits */}
+            {/* team pill + round indicator + pause badge + timer digits */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 10 }}>
-              <span className="font-body" style={{
-                background: phase === "playing" ? teamColor.css : "var(--ink-panel-light)",
-                color: phase === "playing" ? "var(--ink)" : "var(--muted)",
-                padding: "5px 12px", borderRadius: 99, fontWeight: 700, fontSize: 12,
-                whiteSpace: "nowrap",
-              }}>
-                {phase === "playing" ? `SQUADRA ${team}` : "—"}
+              <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span className="font-body" style={{
+                  background: phase === "playing" ? teamColor.css : "var(--ink-panel-light)",
+                  color: phase === "playing" ? "var(--ink)" : "var(--muted)",
+                  padding: "5px 12px", borderRadius: 99, fontWeight: 700, fontSize: 12,
+                  whiteSpace: "nowrap",
+                }}>
+                  {phase === "playing" ? `SQUADRA ${team}` : "—"}
+                </span>
+                {phase === "playing" && maxRounds > 0 && (
+                  <span className="font-mono" style={{
+                    background: "var(--ink)", color: "var(--muted)",
+                    padding: "4px 10px", borderRadius: 99, fontSize: 11, fontWeight: 600,
+                    whiteSpace: "nowrap",
+                  }}>
+                    {currentRound}/{maxRounds}
+                  </span>
+                )}
               </span>
 
               {isPaused && phase === "playing" && (

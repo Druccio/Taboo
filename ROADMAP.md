@@ -114,7 +114,7 @@ Obiettivo: predisporre la struttura del codice per accogliere queste funzionalit
 
 ## 📋 Checklist Implementazione Futura
 
-- [ ] **Turni & Round:** Aggiungere `maxRounds` e contatore `currentRound` nel regolamento (`App.jsx`).
+- [x] **Turni & Round:** Aggiungere `maxRounds` e contatore `currentRound` nel regolamento (`App.jsx`).
 - [ ] **UI Dropdown:** Implementare componente `CustomSelect` o menù a tendina stilizzato.
 - [ ] **Mazzi Tematici:** Refactoring modulare di `src/decks/` e creazione mazzo *Disney* (~50-100 carte).
 - [ ] **Mazzo Misto:** Abilitare la selezione multipla di mazzi con concatenazione e shuffle.
