@@ -607,7 +607,14 @@ export default function TabooGameApp() {
         {/* Marquee header */}
         <div className="text-center mb-6">
           <MarqueeBulbs />
-          <h1 className="font-display" style={{ fontSize: 42, fontWeight: 800, color: "var(--cream)", letterSpacing: -1, lineHeight: 1.1, margin: "10px 0 4px" }}>
+          <div className="flex justify-center mt-3 mb-1">
+            <img
+              src="/logo.png"
+              alt="L'Hai Detto! Taboo Logo"
+              className="w-20 sm:w-24 h-auto drop-shadow-xl hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+          <h1 className="font-display" style={{ fontSize: 40, fontWeight: 800, color: "var(--cream)", letterSpacing: -1, lineHeight: 1.1, margin: "6px 0 4px" }}>
             TABOO<span style={{ color: "var(--gold)" }}>!</span>
           </h1>
           <p className="font-body" style={{ color: "var(--muted)", fontSize: 12, marginBottom: 10, letterSpacing: 1, textTransform: "uppercase" }}>
