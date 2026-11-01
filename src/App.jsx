@@ -466,6 +466,7 @@ export default function TabooGameApp() {
 
   const [cardsState, setCardsState] = useState([]);
   const [index, setIndex] = useState(0);
+  const [deckExhausted, setDeckExhausted] = useState(false); // true when deck looped
   const [team, setTeam] = useState(1);                     // active team
   const [currentRound, setCurrentRound] = useState(1);     // current round number
   const [scores, setScores] = useState({ 1: 0, 2: 0 });    // cumulative
@@ -515,9 +516,17 @@ export default function TabooGameApp() {
 
   // ── Actions ────────────────────────────────────────────────────────────────
   const nextCard = () => {
-    if (cardsState.length > 0) {
-      setIndex((i) => (i + 1) % cardsState.length);
-    }
+    if (cardsState.length === 0) return;
+    setIndex((i) => {
+      const next = i + 1;
+      if (next >= cardsState.length) {
+        // Deck exhausted: reshuffle and restart from 0
+        setCardsState((prev) => shuffle(prev));
+        setDeckExhausted(true);
+        return 0;
+      }
+      return next;
+    });
   };
 
   const correct = () => {
@@ -552,6 +561,7 @@ export default function TabooGameApp() {
   const startGame = () => {
     setCardsState(shuffle(decks[selectedDeck]));
     setIndex(0);
+    setDeckExhausted(false);
     setScores({ 1: 0, 2: 0 });
     setTabooScores({ 1: 0, 2: 0 });
     setTurnScores({ 1: 0, 2: 0 });
@@ -826,6 +836,18 @@ export default function TabooGameApp() {
             </div>
 
             <SegmentMeter pct={timerPct} danger={isDanger} teamColor={teamColor.css} />
+
+            {/* deck-exhausted notice */}
+            {deckExhausted && phase === "playing" && (
+              <div className="font-body" style={{
+                marginTop: 10, padding: "6px 12px", borderRadius: 99,
+                background: "rgba(244,180,0,.12)", color: "var(--gold)",
+                fontSize: 11, fontWeight: 700, textAlign: "center",
+                letterSpacing: 0.4,
+              }}>
+                🔁 Mazzo completato — ripartenza dall&apos;inizio (carte rimescolate)
+              </div>
+            )}
 
             {/* word */}
             <div style={{ position: "relative", margin: "24px 0 18px", minHeight: 48 }}>
